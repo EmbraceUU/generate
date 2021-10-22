@@ -16,3 +16,11 @@ type FileRarity struct {
 	AttributeName string
 	Rarity        float64
 }
+
+type UsageCount struct {
+	Available  float64 // 提供数量
+	Remain     float64 // 库存
+	Usage      float64 // 使用数量
+	UsageRatio float64 // 使用占比
+	Rarity     float64 // 目标占比
+}

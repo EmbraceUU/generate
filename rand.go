@@ -38,8 +38,12 @@ func randProcess() error {
 				rd := RandInt(len(curSheetValue))
 				key := fmt.Sprintf("%s-%d", currentSheet, rd)
 				// 判断是否还有库存
-				surplus, ok := componentRep[key]
-				if !ok || surplus < minRep {
+				//surplus, ok := componentRep[key]
+				//if !ok || surplus < minRep {
+				//	continue
+				//}
+				ug, ok := componentUsage[key]
+				if !ok || ug.Remain < minRep {
 					continue
 				}
 				target := curSheetValue[rd].FileName
@@ -51,7 +55,7 @@ func randProcess() error {
 				fs = append(fs, fmt.Sprintf("%s%s/%s", RootPath, currentSheet, target))
 				fileName = fmt.Sprintf("%s%c%d", fileName, alias, rd+1)
 
-				targets = append(targets, target)
+				targets = append(targets, curSheetValue[rd].AttributeName)
 
 			}
 		}
@@ -66,10 +70,13 @@ func randProcess() error {
 
 		// 更新计数器
 		for _, v := range pitchRecord {
-			componentRep[v] = componentRep[v] - 1
+			//componentRep[v] = componentRep[v] - 1
+			ug := componentUsage[v]
+			ug.Remain--
+			componentUsage[v] = ug
 		}
 
-		targets = append(targets, fmt.Sprintf("%s.png", fileName))
+		targets = append(targets, fileName)
 		for axis, l := 'A', 0; l < len(targets); axis, l = axis+1, l+1 {
 			sheetValue[fmt.Sprintf("%c%d", axis, i+2)] = targets[l]
 		}

@@ -14,9 +14,9 @@ var (
 	duplicateSet = make(map[string]struct{})
 
 	// key -> sheetName  value -> Rows
-	componentMap = make(map[string][]FileRarity)
-	componentRep = make(map[string]float64)
-	compPriority = make([]string, 0)
+	componentMap   = make(map[string][]FileRarity)
+	componentUsage = make(map[string]UsageCount)
+	compPriority   = make([]string, 0)
 
 	goPool *ants.PoolWithFunc
 	wg     sync.WaitGroup
@@ -33,12 +33,12 @@ var (
 const (
 	SHEET    = "generate"
 	SheetII  = "snap"
-	RandNum  = 3000
+	RandNum  = 100
 	PoolSize = 20
 
 	FileNameFormatFirstChar = 'a'
 	Transfer                = false
-	GenerateImage           = false
+	GenerateImage           = true
 	RootPath                = "/Users/admin/Desktop/mystery-box/"
 	TempDir                 = "temp"
 	OutDir                  = "out"

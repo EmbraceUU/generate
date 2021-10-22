@@ -46,10 +46,26 @@ func generateSheetMapValue(f *excelize.File) error {
 		_ = f.SetCellValue(SHEET, k, v)
 	}
 
-	index := 1
-	for k, v := range componentRep {
+	snapHeader := map[string]string{
+		"A1": "AttributeName",
+		"B1": "Remain",
+		"C1": "Usage",
+		"D1": "Usage Ratio",
+		"E1": "Rarity",
+	}
+
+	for k, v := range snapHeader {
+		_ = f.SetCellValue(SheetII, k, v)
+	}
+
+	index := 2
+	for k, ug := range componentUsage {
 		_ = f.SetCellValue(SheetII, fmt.Sprintf("A%d", index), k)
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("B%d", index), v)
+		_ = f.SetCellValue(SheetII, fmt.Sprintf("B%d", index), ug.Remain)
+
+		_ = f.SetCellValue(SheetII, fmt.Sprintf("C%d", index), ug.Available-ug.Remain)
+		_ = f.SetCellValue(SheetII, fmt.Sprintf("D%d", index), (ug.Available-ug.Remain)/RandNum*100)
+		_ = f.SetCellValue(SheetII, fmt.Sprintf("E%d", index), ug.Rarity)
 		index++
 	}
 
