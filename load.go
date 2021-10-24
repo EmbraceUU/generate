@@ -20,6 +20,7 @@ func loadDuplicateSet() error {
 	}
 
 	for _, v := range duplicate.RECORDS {
+		v.FileName = transferFileName(v.FileName)
 		duplicateSet[v.FileName] = struct{}{}
 	}
 

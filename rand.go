@@ -102,8 +102,16 @@ func checkDuplicate(fileName string) bool {
 		fileName = strings.Replace(fileName, "j", "e", 1)
 	}
 
-	if _, ok := duplicateSet[fileName]; ok {
-		return true
+	//if _, ok := duplicateSet[fileName]; ok {
+	//	return true
+	//}
+
+	splitII := strings.Split(fileName, "b")
+	for k := range duplicateSet {
+		splitI := strings.Split(k, "b")
+		if strings.EqualFold(splitI[1], splitII[1]) {
+			return true
+		}
 	}
 
 	// 将fileName存入duplicateSet, 防止后面重复生成

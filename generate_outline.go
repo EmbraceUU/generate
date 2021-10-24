@@ -9,6 +9,7 @@ import (
 	"github.com/anthonynsimon/bild/transform"
 	"image"
 	"image/color"
+	"strings"
 )
 
 const OutLineLength = 1
@@ -114,6 +115,18 @@ func OverlayRGBA(fs []string) (*image.RGBA, error) {
 	}
 
 	return portion, nil
+}
+
+func transferFileName(fileName string) string {
+	fileName = strings.Replace(fileName, "bg", "a", 1)
+	fileName = strings.Replace(fileName, "e", "f", 1)
+	fileName = strings.Replace(fileName, "d", "e", 1)
+	fileName = strings.Replace(fileName, "c", "d", 1)
+	fileName = strings.Replace(fileName, "b", "c", 1)
+	fileName = strings.Replace(fileName, "a", "b", 1)
+
+	splits := strings.Split(fileName, "a")
+	return "a" + splits[1] + splits[0]
 }
 
 //func OutLine(source *image.RGBA, length int, fileName string) error {

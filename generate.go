@@ -57,6 +57,12 @@ func GenerateRun() {
 		return
 	}
 
+	err = loadDuplicateSet()
+	if err != nil {
+		fmt.Println("load duplicate failed, err: ", err.Error())
+		return
+	}
+
 	// 读取组件过程
 	err = loadComponent(f)
 	if err != nil {

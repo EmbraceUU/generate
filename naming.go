@@ -8,8 +8,8 @@ const (
 
 	FileNameFormatFirstChar = 'a'
 	Transfer                = false
-	GenerateImages          = false
-	RootPath                = "/Users/admin/Desktop/mystery box/maskhuman/component/boy/"
+	GenerateImages          = true
+	RootPath                = "/Users/admin/Desktop/mystery box/maskhuman/component/girl/"
 	TempDir                 = "temp"
 	OutDir                  = "out"
 
