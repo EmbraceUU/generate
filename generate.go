@@ -33,7 +33,7 @@ var (
 
 	taskQueue = make([]GenerateImageParam, 0)
 
-	minRep = float64(1)
+	minRep = float64(-1)
 
 	fulfillment int64
 )
@@ -46,7 +46,7 @@ func GenerateRun() {
 	var err error
 
 	goPool, _ = ants.NewPoolWithFunc(PoolSize, func(fs interface{}) {
-		_ = generateImage(fs)
+		_ = GenerateOutline(fs)
 		wg.Done()
 	})
 	defer goPool.Release()
@@ -65,8 +65,8 @@ func GenerateRun() {
 	}
 
 	// Create a new sheet.
-	index := f.NewSheet(SHEET)
-	snapIndex := f.NewSheet(SheetII)
+	_ = f.NewSheet(SHEET)
+	_ = f.NewSheet(SheetII)
 
 	// 随机过程, 组合组件列表
 	err = randProcess()
@@ -83,13 +83,13 @@ func GenerateRun() {
 	}
 
 	// 保存到excel文件
-	f.SetActiveSheet(index)
-	f.SetActiveSheet(snapIndex)
+	//f.SetActiveSheet(index)
+	//f.SetActiveSheet(snapIndex)
 	if err = f.Save(); err != nil {
 		fmt.Println(err)
 	}
 
-	if GenerateImage {
+	if GenerateImages {
 		for _, g := range taskQueue {
 			wg.Add(1)
 			_ = goPool.Invoke(g)
@@ -155,32 +155,6 @@ func generateSheetMapValue(f *excelize.File) error {
 	}
 
 	return err
-}
-
-func generateImage(i interface{}) error {
-	var err error
-
-	param := i.(GenerateImageParam)
-	fs := param.Fs
-	fileName := param.FileName
-
-	defer func() {
-		addCount()
-		fmt.Println("generate current finished proportion: ", currentProportion(), " count: ", currentCount())
-	}()
-
-	fmt.Println("generate image begin, ", fileName)
-
-	// 生成一个除background以外的临时图片
-	testPath := fmt.Sprintf("%s%s/%s.png", RootPath, OutDir, fileName)
-	err = OverlayImage(fs, testPath)
-	if err != nil {
-		fmt.Println("generate image failed, ", fileName, " ", err.Error())
-		return err
-	}
-
-	fmt.Println("generate image finished, ", fileName)
-	return nil
 }
 
 func OverlayImage(fs []string, dst string) error {

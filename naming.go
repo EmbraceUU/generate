@@ -3,17 +3,17 @@ package main
 const (
 	SHEET    = "generate"
 	SheetII  = "snap"
-	RandNum  = 100
+	RandNum  = 1400
 	PoolSize = 20
 
 	FileNameFormatFirstChar = 'a'
 	Transfer                = false
-	GenerateImage           = true
-	RootPath                = "/Users/admin/Desktop/mystery-box/"
+	GenerateImages          = false
+	RootPath                = "/Users/admin/Desktop/mystery box/maskhuman/component/boy/"
 	TempDir                 = "temp"
 	OutDir                  = "out"
 
-	ConfExcelName = "rarity.xlsx"
+	ConfExcelName = "MaskHuman.xlsx"
 )
 
 const (
