@@ -2,6 +2,10 @@ package main
 
 import "flag"
 
+func init() {
+	SettingSetUp()
+}
+
 func main() {
 	var mode string
 	flag.StringVar(&mode, "mode", Generate, "the mode type, default is generate. ")

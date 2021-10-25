@@ -71,10 +71,9 @@ func loadComponent(f *excelize.File) error {
 			}
 
 			// 因为略过了0位
-			//componentRep[fmt.Sprintf("%s-%d", sheet, i-1)] = fr.Rarity * float64(RandNum) / float64(100)
 			componentUsage[fmt.Sprintf("%s-%d", sheet, i-1)] = UsageCount{
-				Available: fr.Rarity * float64(RandNum) / float64(100),
-				Remain:    fr.Rarity * float64(RandNum) / float64(100),
+				Available: fr.Rarity * float64(GenerateConfig.RandNum) / float64(100),
+				Remain:    fr.Rarity * float64(GenerateConfig.RandNum) / float64(100),
 				Rarity:    fr.Rarity,
 			}
 			frs = append(frs, fr)
@@ -84,10 +83,4 @@ func loadComponent(f *excelize.File) error {
 		componentMap[sheet] = frs
 	}
 	return nil
-}
-
-func mapCopy(m1, m2 map[string]float64) {
-	for k, v := range m1 {
-		m2[k] = v
-	}
 }

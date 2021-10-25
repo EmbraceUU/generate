@@ -68,7 +68,7 @@ func GenerateOutline(i interface{}) error {
 		return err
 	}
 
-	testPath := fmt.Sprintf("%s%s/%s.png", RootPath, OutDir, fileName)
+	testPath := fmt.Sprintf("%s%s/%s.png", GenerateConfig.RootPath, GenerateConfig.OutDir, fileName)
 	err = imgio.Save(testPath, result, imgio.PNGEncoder())
 	if err != nil {
 		return err

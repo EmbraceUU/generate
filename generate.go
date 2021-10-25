@@ -45,13 +45,13 @@ func GenerateRun() {
 
 	var err error
 
-	goPool, _ = ants.NewPoolWithFunc(PoolSize, func(fs interface{}) {
+	goPool, _ = ants.NewPoolWithFunc(GenerateConfig.PoolSize, func(fs interface{}) {
 		_ = GenerateOutline(fs)
 		wg.Done()
 	})
 	defer goPool.Release()
 
-	f, errR := excelize.OpenFile(fmt.Sprintf("%s/%s", RootPath, ConfExcelName))
+	f, errR := excelize.OpenFile(fmt.Sprintf("%s/%s", GenerateConfig.RootPath, GenerateConfig.ExcelName))
 	if errR != nil {
 		fmt.Println("open conf excel file failed, err: ", errR.Error())
 		return
@@ -71,8 +71,8 @@ func GenerateRun() {
 	}
 
 	// Create a new sheet.
-	_ = f.NewSheet(SHEET)
-	_ = f.NewSheet(SheetII)
+	_ = f.NewSheet(GenerateConfig.OutSheet)
+	_ = f.NewSheet(GenerateConfig.SnapSheet)
 
 	// 随机过程, 组合组件列表
 	err = randProcess()
@@ -95,7 +95,7 @@ func GenerateRun() {
 		fmt.Println(err)
 	}
 
-	if GenerateImages {
+	if GenerateConfig.IfGenerateImage {
 		for _, g := range taskQueue {
 			wg.Add(1)
 			_ = goPool.Invoke(g)
@@ -111,7 +111,7 @@ func addCount() {
 }
 
 func currentProportion() float64 {
-	return float64(atomic.LoadInt64(&fulfillment)) / RandNum
+	return float64(atomic.LoadInt64(&fulfillment)) / float64(GenerateConfig.RandNum)
 }
 
 func currentCount() int64 {
@@ -130,11 +130,11 @@ func generateSheetMapValue(f *excelize.File) error {
 	}
 
 	for k, v := range header {
-		_ = f.SetCellValue(SHEET, k, v)
+		_ = f.SetCellValue(GenerateConfig.OutSheet, k, v)
 	}
 
 	for k, v := range sheetValue {
-		_ = f.SetCellValue(SHEET, k, v)
+		_ = f.SetCellValue(GenerateConfig.OutSheet, k, v)
 	}
 
 	snapHeader := map[string]string{
@@ -146,17 +146,17 @@ func generateSheetMapValue(f *excelize.File) error {
 	}
 
 	for k, v := range snapHeader {
-		_ = f.SetCellValue(SheetII, k, v)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, k, v)
 	}
 
 	index := 2
 	for k, ug := range componentUsage {
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("A%d", index), k)
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("B%d", index), ug.Remain)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, fmt.Sprintf("A%d", index), k)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, fmt.Sprintf("B%d", index), ug.Remain)
 
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("C%d", index), ug.Available-ug.Remain)
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("D%d", index), (ug.Available-ug.Remain)/RandNum*100)
-		_ = f.SetCellValue(SheetII, fmt.Sprintf("E%d", index), ug.Rarity)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, fmt.Sprintf("C%d", index), ug.Available-ug.Remain)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, fmt.Sprintf("D%d", index), (ug.Available-ug.Remain)/float64(GenerateConfig.RandNum)*100)
+		_ = f.SetCellValue(GenerateConfig.SnapSheet, fmt.Sprintf("E%d", index), ug.Rarity)
 		index++
 	}
 

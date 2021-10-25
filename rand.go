@@ -12,10 +12,10 @@ func randProcess() error {
 	var err error
 
 	blockingCount := 0
-	for i := 0; i < RandNum; {
+	for i := 0; i < GenerateConfig.RandNum; {
 		fmt.Printf("generate image num %d \n", i)
 
-		if blockingCount > RandNum {
+		if blockingCount > GenerateConfig.RandNum {
 			minRep--
 		}
 
@@ -52,7 +52,7 @@ func randProcess() error {
 				pitchRecord = append(pitchRecord, key)
 				unDone = false
 
-				fs = append(fs, fmt.Sprintf("%s%s/%s", RootPath, currentSheet, target))
+				fs = append(fs, fmt.Sprintf("%s%s/%s", GenerateConfig.RootPath, currentSheet, target))
 				fileName = fmt.Sprintf("%s%c%d", fileName, alias, rd+1)
 
 				targets = append(targets, curSheetValue[rd].AttributeName)
@@ -93,15 +93,6 @@ func randProcess() error {
 }
 
 func checkDuplicate(fileName string) bool {
-	// 先替换一下fileName中的编号
-	if Transfer {
-		fileName = strings.Replace(fileName, "f", "a", 1)
-		fileName = strings.Replace(fileName, "g", "b", 1)
-		fileName = strings.Replace(fileName, "h", "c", 1)
-		fileName = strings.Replace(fileName, "i", "d", 1)
-		fileName = strings.Replace(fileName, "j", "e", 1)
-	}
-
 	//if _, ok := duplicateSet[fileName]; ok {
 	//	return true
 	//}

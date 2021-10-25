@@ -17,7 +17,7 @@ func GenerateImage(i interface{}) error {
 	fmt.Println("generate image begin, ", fileName)
 
 	// 生成一个除background以外的临时图片
-	testPath := fmt.Sprintf("%s%s/%s.png", RootPath, OutDir, fileName)
+	testPath := fmt.Sprintf("%s%s/%s.png", GenerateConfig.RootPath, GenerateConfig.OutDir, fileName)
 	err = OverlayImage(fs, testPath)
 	if err != nil {
 		fmt.Println("generate image failed, ", fileName, " ", err.Error())
