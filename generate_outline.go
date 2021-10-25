@@ -118,13 +118,18 @@ func OverlayRGBA(fs []string) (*image.RGBA, error) {
 }
 
 func transferFileName(fileName string) string {
-	fileName = strings.Replace(fileName, "bg", "a", 1)
-	fileName = strings.Replace(fileName, "e", "f", 1)
-	fileName = strings.Replace(fileName, "d", "e", 1)
-	fileName = strings.Replace(fileName, "c", "d", 1)
-	fileName = strings.Replace(fileName, "b", "c", 1)
-	fileName = strings.Replace(fileName, "a", "b", 1)
+	// 只处理以前带bg的
+	if strings.Contains(fileName, "bg") {
+		fileName = strings.Replace(fileName, "bg", "a", 1)
+		fileName = strings.Replace(fileName, "e", "f", 1)
+		fileName = strings.Replace(fileName, "d", "e", 1)
+		fileName = strings.Replace(fileName, "c", "d", 1)
+		fileName = strings.Replace(fileName, "b", "c", 1)
+		fileName = strings.Replace(fileName, "a", "b", 1)
 
-	splits := strings.Split(fileName, "a")
-	return "a" + splits[1] + splits[0]
+		splits := strings.Split(fileName, "a")
+		return "a" + splits[1] + splits[0]
+	}
+
+	return fileName
 }

@@ -1,37 +1,54 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/xuri/excelize/v2"
-	"io/ioutil"
 	"strconv"
 )
 
-func loadDuplicateSet() error {
-	data, err := ioutil.ReadFile("")
+func loadDuplicateSet(f *excelize.File) error {
+	rows, err := f.GetRows(GenerateConfig.ExistedSheet)
 	if err != nil {
-		return err
-	}
-	var duplicate Duplicate
-	err = json.Unmarshal(data, &duplicate)
-	if err != nil {
-		return err
+		return fmt.Errorf("load existed record failed, err: %s", err.Error())
 	}
 
-	for _, v := range duplicate.RECORDS {
-		v.FileName = transferFileName(v.FileName)
-		duplicateSet[v.FileName] = struct{}{}
+	for i, row := range rows {
+		if i == 0 {
+			continue
+		}
+
+		if row == nil || len(row) == 0 {
+			continue
+		}
+
+		// TODO 转换fileName也需要抽先出来, 适用于不同的模板
+		fileName := transferFileName(row[0])
+		duplicateSet[fileName] = struct{}{}
 	}
 
 	return err
+
+	//data, err := ioutil.ReadFile("")
+	//if err != nil {
+	//	return err
+	//}
+	//var duplicate Duplicate
+	//err = json.Unmarshal(data, &duplicate)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//for _, v := range duplicate.RECORDS {
+	//	v.FileName = transferFileName(v.FileName)
+	//	duplicateSet[v.FileName] = struct{}{}
+	//}
+	//
+	//return err
 }
 
 // 加载组件文件
 func loadComponent(f *excelize.File) error {
-	// 读取excel文件
 	// 读取sheet列表
-	// 从第二个开始排序读取
 	sheetList := f.GetSheetList()
 	if sheetList == nil || len(sheetList) == 0 {
 		return fmt.Errorf("check failed. Excel is empty. ")

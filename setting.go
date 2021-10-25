@@ -6,10 +6,11 @@ import (
 )
 
 type GenerateSetting struct {
-	OutSheet  string // 输出的sheet页名称
-	SnapSheet string // 记录快照的sheet页名称
-	RandNum   int    // 随机的次数
-	PoolSize  int    // 协程池大小
+	OutSheet     string // 输出的sheet页名称
+	SnapSheet    string // 记录快照的sheet页名称
+	ExistedSheet string // 记录已经存在的fileName, 用于去重
+	RandNum      int    // 随机的次数
+	PoolSize     int    // 协程池大小
 
 	IfGenerateImage bool   // 生成image的开关
 	RootPath        string // 文件根目录
@@ -55,6 +56,10 @@ func SettingSetUp() {
 
 	if GenerateConfig.SnapSheet == EmptyStr {
 		GenerateConfig.SnapSheet = "snap"
+	}
+
+	if GenerateConfig.ExistedSheet == EmptyStr {
+		GenerateConfig.ExistedSheet = "existed"
 	}
 }
 

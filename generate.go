@@ -58,10 +58,10 @@ func GenerateRun() {
 		return
 	}
 
-	err = loadDuplicateSet()
+	// 加载已存在的记录, 用于去重
+	err = loadDuplicateSet(f)
 	if err != nil {
 		Error("load duplicate failed, err: ", err.Error())
-		return
 	}
 
 	// 读取组件过程
