@@ -78,8 +78,6 @@ func loadComponent(f *excelize.File) error {
 			}
 			frs = append(frs, fr)
 		}
-		// 将当前库存复制到快照
-		//mapCopy(componentRep, componentRepSnap)
 		componentMap[sheet] = frs
 	}
 	return nil

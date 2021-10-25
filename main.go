@@ -3,6 +3,7 @@ package main
 import "flag"
 
 func init() {
+	LogSetUp()
 	SettingSetUp()
 }
 

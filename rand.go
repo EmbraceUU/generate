@@ -13,7 +13,7 @@ func randProcess() error {
 
 	blockingCount := 0
 	for i := 0; i < GenerateConfig.RandNum; {
-		fmt.Printf("generate image num %d \n", i)
+		Infoln("generate image num %d \n", i)
 
 		if blockingCount > GenerateConfig.RandNum {
 			minRep--
@@ -38,10 +38,6 @@ func randProcess() error {
 				rd := RandInt(len(curSheetValue))
 				key := fmt.Sprintf("%s-%d", currentSheet, rd)
 				// 判断是否还有库存
-				//surplus, ok := componentRep[key]
-				//if !ok || surplus < minRep {
-				//	continue
-				//}
 				ug, ok := componentUsage[key]
 				if !ok || ug.Remain < minRep {
 					continue
@@ -61,7 +57,7 @@ func randProcess() error {
 		}
 
 		if ok := checkDuplicate(fileName); ok {
-			fmt.Println("generate file again, Duplicate names appear. ", fileName)
+			Infoln("generate file again, Duplicate names appear. ", fileName)
 			blockingCount++
 			continue
 		}
@@ -92,6 +88,7 @@ func randProcess() error {
 	return err
 }
 
+// TODO 抽象成interface, 不同的项目需要不同的去重方式
 func checkDuplicate(fileName string) bool {
 	//if _, ok := duplicateSet[fileName]; ok {
 	//	return true

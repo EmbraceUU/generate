@@ -41,10 +41,11 @@ var (
 func GenerateRun() {
 	runtime.GOMAXPROCS(runNum)
 
-	fmt.Println("rand begin, ", startTime)
+	Infoln("rand begin, ", startTime)
 
 	var err error
 
+	// TODO 需要抽象成interface, 不同的项目需要不同的实现
 	goPool, _ = ants.NewPoolWithFunc(GenerateConfig.PoolSize, func(fs interface{}) {
 		_ = GenerateOutline(fs)
 		wg.Done()
@@ -53,20 +54,20 @@ func GenerateRun() {
 
 	f, errR := excelize.OpenFile(fmt.Sprintf("%s/%s", GenerateConfig.RootPath, GenerateConfig.ExcelName))
 	if errR != nil {
-		fmt.Println("open conf excel file failed, err: ", errR.Error())
+		Error("open conf excel file failed, err: ", errR.Error())
 		return
 	}
 
 	err = loadDuplicateSet()
 	if err != nil {
-		fmt.Println("load duplicate failed, err: ", err.Error())
+		Error("load duplicate failed, err: ", err.Error())
 		return
 	}
 
 	// 读取组件过程
 	err = loadComponent(f)
 	if err != nil {
-		fmt.Println("load component failed, err: ", err.Error())
+		Error("load component failed, err: ", err.Error())
 		return
 	}
 
@@ -77,22 +78,21 @@ func GenerateRun() {
 	// 随机过程, 组合组件列表
 	err = randProcess()
 	if err != nil {
-		fmt.Println("rand process failed, err: ", err.Error())
+		Error("rand process failed, err: ", err.Error())
 		return
 	}
 
 	// 生成sheet map
 	err = generateSheetMapValue(f)
 	if err != nil {
-		fmt.Println("generate sheet map failed, err: ", err.Error())
+		Error("generate sheet map failed, err: ", err.Error())
 		return
 	}
 
 	// 保存到excel文件
-	//f.SetActiveSheet(index)
-	//f.SetActiveSheet(snapIndex)
 	if err = f.Save(); err != nil {
-		fmt.Println(err)
+		Error("save excel failed, ", err)
+		return
 	}
 
 	if GenerateConfig.IfGenerateImage {
@@ -103,7 +103,7 @@ func GenerateRun() {
 		wg.Wait()
 	}
 
-	fmt.Println("generate image over. cost ", float64(time.Now().Unix()-startTime)/3600, " h.")
+	Infoln("generate image over. cost ", float64(time.Now().Unix()-startTime)/3600, " h.")
 }
 
 func addCount() {

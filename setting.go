@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/go-ini/ini"
-	"log"
 	"runtime"
 )
 
@@ -25,11 +24,11 @@ var GenerateConfig = &GenerateSetting{}
 var cfg *ini.File
 
 func SettingSetUp() {
-	log.Println("setting setup. ")
+	Infoln("setting setup. ")
 	var err error
 	cfg, err = ini.Load("app.ini")
 	if err != nil {
-		log.Fatalf("setting.Setup, fail to parse 'app.ini': %v", err)
+		Fatalf("setting.Setup, fail to parse 'app.ini': %v", err)
 	}
 
 	mapTo("generate", GenerateConfig)
@@ -62,6 +61,6 @@ func SettingSetUp() {
 func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
-		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
+		Fatalf("Cfg.MapTo %s err: %v", section, err)
 	}
 }

@@ -27,11 +27,11 @@ func GenerateOutline(i interface{}) error {
 	fs := param.Fs
 	fileName := param.FileName
 
-	fmt.Println("generate image begin, ", fileName)
+	Infoln("generate image begin, ", fileName)
 
 	defer func() {
 		addCount()
-		fmt.Println("generate current finished proportion: ", currentProportion(), " count: ", currentCount())
+		Infoln("generate current finished proportion: ", currentProportion(), " count: ", currentCount())
 	}()
 
 	// 生成一个除background以外的临时图片
@@ -128,51 +128,3 @@ func transferFileName(fileName string) string {
 	splits := strings.Split(fileName, "a")
 	return "a" + splits[1] + splits[0]
 }
-
-//func OutLine(source *image.RGBA, length int, fileName string) error {
-//	right := transform.Translate(source, length, 0)
-//	err := imgio.Save(fmt.Sprintf("%s/%s-temp2.png", tempPath, fileName), right, imgio.PNGEncoder())
-//	if err != nil {
-//		return err
-//	}
-//
-//	left := transform.Translate(source, -length, 0)
-//	err = imgio.Save(fmt.Sprintf("%s/%s-temp3.png", tempPath, fileName), left, imgio.PNGEncoder())
-//	if err != nil {
-//		return err
-//	}
-//
-//	up := transform.Translate(source, 0, length)
-//	err = imgio.Save(fmt.Sprintf("%s/%s-temp4.png", tempPath, fileName), up, imgio.PNGEncoder())
-//	if err != nil {
-//		return err
-//	}
-//
-//	down := transform.Translate(source, 0, -length)
-//	err = imgio.Save(fmt.Sprintf("%s/%s-temp5.png", tempPath, fileName), down, imgio.PNGEncoder())
-//	if err != nil {
-//		return err
-//	}
-//
-//	return nil
-//}
-//
-//func BendOutline(fileName string) (*image.RGBA, error) {
-//	var fs []string
-//	fs = append(fs, fmt.Sprintf("%s/%s-temp2.png", tempPath, fileName))
-//	fs = append(fs, fmt.Sprintf("%s/%s-temp3.png", tempPath, fileName))
-//	fs = append(fs, fmt.Sprintf("%s/%s-temp4.png", tempPath, fileName))
-//	fs = append(fs, fmt.Sprintf("%s/%s-temp5.png", tempPath, fileName))
-//
-//	err := OverlayImage(fs, fmt.Sprintf("%s/%s-temp-outline.png", tempPath, fileName))
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	img, err := LoadImage(fmt.Sprintf("%s/%s-temp-outline.png", tempPath, fileName))
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return clone.AsRGBA(*img), nil
-//}

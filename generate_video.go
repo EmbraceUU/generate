@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"os/exec"
 )
 
@@ -17,8 +16,8 @@ func GenerateVideo() error {
 	cmdArguments := []string{"-r", "1", "-i", PngPath, "-i", MusicPath, "-c:v", "libx264", "-c:a", "aac", "-b:a", "192k", "-ar", "22050", "-ac", "2", "-pix_fmt", "yuvj420p", "-shortest", "-y", OutPath}
 	cmd := exec.Command(CommandName, cmdArguments...)
 
-	fmt.Println("+++++++++++++++++++")
-	fmt.Println(cmd)
+	Infoln("+++++++++++++++++++")
+	Infoln(cmd)
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -26,13 +25,13 @@ func GenerateVideo() error {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 
-	fmt.Println("+++++++++++++++++++")
-	fmt.Println(out.String())
-	fmt.Println("+++++++++++++++++++")
-	fmt.Println(stderr.String())
-	fmt.Println("+++++++++++++++++++")
+	Infoln("+++++++++++++++++++")
+	Infoln(out.String())
+	Infoln("+++++++++++++++++++")
+	Infoln(stderr.String())
+	Infoln("+++++++++++++++++++")
 	if err != nil {
-		fmt.Println(err.Error())
+		Infoln(err.Error())
 	}
 
 	return nil
